@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Pick_ME_UP"
-run/main_scene="res://test_battle.tscn"
+run/main_scene="res://scenes/MainMenu.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -20,6 +20,8 @@ config/icon="res://icon.svg"
 RunState="*uid://bys735awaeehc"
 BattleManager="*uid://dyni7qac2f7t"
 GachaManager="*uid://cbvqai2icx3wq"
+SceneManager="*res://autoloads/SceneManager.gd"
+EnemyFactory="*res://autoloads/EnemyFactory.gd"
 
 [editor]
 

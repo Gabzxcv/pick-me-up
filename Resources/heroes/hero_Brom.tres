@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://herobrom00001"]
+
+[ext_resource type="Script" uid="uid://btntb7yfgs8cr" path="res://Resources/HeroData.gd" id="1_brom"]
+[ext_resource type="Texture2D" uid="uid://dvu8cxn7isv10" path="res://art/heroes/rogues.png" id="2_brom"]
+[ext_resource type="Script" uid="uid://bxqriweplo1oh" path="res://Resources/SkillData.gd" id="3_brom"]
+[ext_resource type="Resource" uid="uid://c2e8u1po3kti8" path="res://Resources/skills/basic_attack.tres" id="4_brom"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_brom"]
+atlas = ExtResource("2_brom")
+region = Rect2(90, 5, 30, 27)
+
+[resource]
+script = ExtResource("1_brom")
+hero_name = "Brom"
+hero_id = "hero_Brom"
+backstory = "A stalwart shield-bearer who endures where others fall."
+portrait = SubResource("AtlasTexture_brom")
+battle_sprite = SubResource("AtlasTexture_brom")
+rarity = 0
+role = 0
+base_hp = 260
+base_atk = 12
+base_def = 18
+base_spd = 6
+base_crit_chance = 0.03
+base_crit_mult = 1.3
+hp_growth = 38.0
+atk_growth = 1.8
+def_growth = 3.5
+spd_growth = 0.2
+skills = Array[ExtResource("3_brom")]([ExtResource("4_brom")])
+personality = 2
+base_morale = 90
+loyalty_threshold = 30

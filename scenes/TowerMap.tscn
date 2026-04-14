@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://sctowermap01"]
+
+[ext_resource type="Script" uid="uid://ctowermap001" path="res://scenes/TowerMap.gd" id="1_tmap"]
+
+[node name="TowerMap" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_tmap")
