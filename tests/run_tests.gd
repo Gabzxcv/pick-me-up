@@ -72,7 +72,7 @@ func _skill(skill_id: String, priority: int, cooldown: int,
 
 func _hero_instance(name: String, hero_id: String, level: int = 1, morale: int = 100) -> HeroInstance:
 	var h = _hero_data(name, hero_id)
-	var inst = HeroInstance.create(h, "run")
+	var inst = HeroInstance.create(h, "test_run")
 	inst.level = level
 	inst.recalculate_stats()
 	inst.current_hp = inst.max_hp
@@ -153,11 +153,12 @@ func _test_run_state() -> void:
 	rs.add_gold(15)
 	_expect(rs.gold == 55, "RunState.add_gold should increase gold")
 
-	var rng = RandomNumberGenerator.new()
-	rng.seed = 123
-	_expect(rs._pick_floor_type(rng, 10) == "boss", "RunState floor type should be boss every 10 floors")
-	_expect(rs._pick_floor_type(rng, 5) == "elite", "RunState floor type should be elite every 5 floors")
-	_expect(rs._pick_modifier(rng, 2) == "", "RunState modifier should be empty before floor 5")
+	_expect(rs.floor_map[5]["type"] == "elite", "RunState floor map should generate elite every 5 floors")
+	_expect(rs.floor_map[10]["type"] == "boss", "RunState floor map should generate boss every 10 floors")
+	for floor in range(0, 5):
+		_expect(rs.floor_map[floor]["modifier"] == "", "RunState floor modifiers should be empty before floor 5")
+	var allowed_modifiers = ["", "thorns", "haste", "fog_of_war", "double_hp"]
+	_expect(allowed_modifiers.has(rs.floor_map[6]["modifier"]), "RunState generated modifiers should be from known set")
 
 	rs.current_floor = 10
 	rs.advance_floor()
@@ -184,7 +185,10 @@ func _test_run_state() -> void:
 
 
 func _test_gacha_manager() -> void:
+	var run_state_before = _snapshot_run_state()
+	var pool_before: Dictionary = {}
 	for rarity in GachaManager.pool.keys():
+		pool_before[rarity] = GachaManager.pool[rarity].duplicate()
 		GachaManager.pool[rarity].clear()
 
 	var common = _hero_data("Common", "hero_common", HeroData.Rarity.COMMON)
@@ -211,6 +215,10 @@ func _test_gacha_manager() -> void:
 	RunState.pity_counter = GachaManager.PITY_THRESHOLD
 	var pity_pull = GachaManager._do_pull()
 	_expect(pity_pull != null and RunState.pity_counter == 0, "GachaManager legendary pull should reset pity")
+
+	for rarity in GachaManager.pool.keys():
+		GachaManager.pool[rarity] = pool_before.get(rarity, []).duplicate()
+	_restore_run_state(run_state_before)
 
 
 func _test_enemy_factory() -> void:
@@ -296,6 +304,7 @@ func _test_battle_manager() -> void:
 	bm._check_battle_end()
 	_expect(not bm._battle_active, "BattleManager should end battle when party is wiped")
 
+	var run_state_before = _snapshot_run_state()
 	RunState.start_new_run("battle_test")
 	var dead_member = _hero_instance("Fallen", "hero_fallen")
 	dead_member.take_damage(9999)
@@ -304,3 +313,32 @@ func _test_battle_manager() -> void:
 	bm._party = [dead_member, living_ally]
 	bm._on_unit_died(dead_member)
 	_expect(living_ally.morale == 45, "BattleManager ally death should reduce living allies' morale")
+	_restore_run_state(run_state_before)
+
+
+func _snapshot_run_state() -> Dictionary:
+	return {
+		"run_id": RunState.run_id,
+		"player_seed": RunState.player_seed,
+		"current_floor": RunState.current_floor,
+		"max_floor": RunState.max_floor,
+		"run_active": RunState.run_active,
+		"gold": RunState.gold,
+		"gacha_tickets": RunState.gacha_tickets,
+		"pity_counter": RunState.pity_counter,
+		"roster": RunState.roster.duplicate(),
+		"floor_map": RunState.floor_map.duplicate(true),
+	}
+
+
+func _restore_run_state(snapshot: Dictionary) -> void:
+	RunState.run_id = snapshot["run_id"]
+	RunState.player_seed = snapshot["player_seed"]
+	RunState.current_floor = snapshot["current_floor"]
+	RunState.max_floor = snapshot["max_floor"]
+	RunState.run_active = snapshot["run_active"]
+	RunState.gold = snapshot["gold"]
+	RunState.gacha_tickets = snapshot["gacha_tickets"]
+	RunState.pity_counter = snapshot["pity_counter"]
+	RunState.roster = snapshot["roster"].duplicate()
+	RunState.floor_map = snapshot["floor_map"].duplicate(true)
