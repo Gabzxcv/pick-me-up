@@ -8,7 +8,7 @@ Run the headless test suite from the project root:
 godot4 --headless --path . --script res://tests/run_tests.gd
 ```
 
-If your binary is named `godot`, use:
+If your binary is named `godot` (or another executable name), replace `godot4` accordingly, for example:
 
 ```bash
 godot --headless --path . --script res://tests/run_tests.gd

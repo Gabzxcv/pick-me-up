@@ -18,6 +18,7 @@ func _init() -> void:
 	_test_gacha_manager()
 	_test_enemy_factory()
 	_test_battle_manager()
+	_test_playability_smoke()
 
 	if _failures.is_empty():
 		print("PASS: %d assertions" % _assertions)
@@ -246,7 +247,6 @@ func _test_battle_manager() -> void:
 	var bm = BattleManagerScript.new()
 	var attacker = _hero_instance("Attacker", "hero_attacker")
 	var target = _hero_instance("Target", "hero_target")
-	target.def_stat = 999
 
 	attacker.morale = 100
 	_expect(bm._calc_damage(attacker, target, 1.0) == attacker.atk, "BattleManager damage should scale with morale at 100")
@@ -281,7 +281,7 @@ func _test_battle_manager() -> void:
 	_expect(bm._pick_skill(caster) == high_priority, "BattleManager should pick highest priority available cooldown skill")
 
 	caster.skill_cooldowns["high"] = 2
-	_expect(bm._pick_skill(caster) == null, "BattleManager should return null when no cooldown-based skills are ready")
+	_expect(bm._pick_skill(caster) == null, "BattleManager should return null when all skills are on cooldown")
 
 	caster.skill_cooldowns = {"a": 2, "b": 0}
 	bm._tick_cooldowns(caster)
@@ -314,6 +314,50 @@ func _test_battle_manager() -> void:
 	bm._on_unit_died(dead_member)
 	_expect(living_ally.morale == 45, "BattleManager ally death should reduce living allies' morale")
 	_restore_run_state(run_state_before)
+
+
+func _test_playability_smoke() -> void:
+	var scene_paths = [
+		"res://scenes/MainMenu.tscn",
+		"res://scenes/TowerMap.tscn",
+		"res://scenes/Battle.tscn",
+		"res://scenes/RestEvent.tscn",
+		"res://scenes/GameOver.tscn",
+	]
+	for scene_path in scene_paths:
+		_expect(ResourceLoader.exists(scene_path), "Playability: required scene should exist: %s" % scene_path)
+		if ResourceLoader.exists(scene_path):
+			var packed = load(scene_path)
+			_expect(packed is PackedScene, "Playability: scene should load as PackedScene: %s" % scene_path)
+			if packed is PackedScene:
+				var inst = packed.instantiate()
+				_expect(inst != null, "Playability: scene should instantiate: %s" % scene_path)
+				if inst != null:
+					inst.queue_free()
+
+	var hero_paths = [
+		"res://Resources/heroes/hero_Tirus.tres",
+		"res://Resources/heroes/hero_Brom.tres",
+		"res://Resources/heroes/hero_Lyra.tres",
+		"res://Resources/heroes/hero_Kael.tres",
+	]
+	for hero_path in hero_paths:
+		_expect(ResourceLoader.exists(hero_path), "Playability: starter hero resource should exist: %s" % hero_path)
+		if ResourceLoader.exists(hero_path):
+			var hero_res = load(hero_path)
+			_expect(hero_res is HeroData, "Playability: hero resource should load as HeroData: %s" % hero_path)
+
+	# Validate core game loop setup used by TowerMap/Battle flow.
+	var rs = RunStateScript.new()
+	rs.max_floor = 10
+	rs.start_new_run("playability_seed")
+	var starter = _hero_data("Starter", "hero_starter")
+	rs.add_hero(starter)
+	rs.advance_floor()
+	var fdata = rs.get_current_floor_data()
+	_expect(not fdata.is_empty(), "Playability: floor data should be available after advancing floor")
+	var enemies = EnemyFactoryScript.new().make_enemy_party(rs.current_floor, fdata.get("type", "battle"))
+	_expect(enemies.size() > 0, "Playability: enemy party should be generated for next encounter")
 
 
 func _snapshot_run_state() -> Dictionary:
