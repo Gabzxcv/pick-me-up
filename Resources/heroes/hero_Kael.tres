@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://herokael00001"]
+[gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://djdsx7hdgs5aa"]
 
 [ext_resource type="Script" uid="uid://btntb7yfgs8cr" path="res://Resources/HeroData.gd" id="1_kael"]
 [ext_resource type="Texture2D" uid="uid://dvu8cxn7isv10" path="res://art/heroes/rogues.png" id="2_kael"]

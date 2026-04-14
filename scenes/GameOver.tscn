@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://scgameover001"]
+[gd_scene format=3 uid="uid://cusr850u4yiyy"]
 
 [ext_resource type="Script" uid="uid://cgameover0001" path="res://scenes/GameOver.gd" id="1_go"]
 
