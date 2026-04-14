@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://b0v40dw4cuyja"]
+
+[ext_resource type="Script" uid="uid://bxqriweplo1oh" path="res://Resources/SkillData.gd" id="1_23vqi"]
+
+[resource]
+script = ExtResource("1_23vqi")
+skill_name = "Heavy Attack"
+skill_id = "skill_heavy"
+description = "A slow but crushing blow."
+cooldown_turns = 3
+priority = 10
+atk_multiplier = 2.5
+metadata/_custom_type_script = "uid://bxqriweplo1oh"

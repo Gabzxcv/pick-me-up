@@ -1,1 +1,3 @@
+HeroData
+SkillData
 Resource

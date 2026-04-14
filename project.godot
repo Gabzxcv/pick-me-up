@@ -25,6 +25,12 @@ GachaManager="*uid://cbvqai2icx3wq"
 
 version_control/autoload_on_startup=true
 
+[file_customization]
+
+folder_colors={
+"res://art/heroes/": "red"
+}
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

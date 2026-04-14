@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SkillData" format=3 uid="uid://c2e8u1po3kti8"]
+
+[ext_resource type="Script" uid="uid://bxqriweplo1oh" path="res://Resources/SkillData.gd" id="1_d3vkk"]
+
+[resource]
+script = ExtResource("1_d3vkk")
+skill_id = "skill_bas_atk"
+description = "A Straight Forward Strike"
+metadata/_custom_type_script = "uid://bxqriweplo1oh"

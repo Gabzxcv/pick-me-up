@@ -1,25 +1,29 @@
-# TestBattle.gd — paste this into your first scene to verify everything works
 extends Node2D
 
+@export var test_hero: HeroData
+
 func _ready() -> void:
-	print("=== BATTLE TEST ===")
+	if not test_hero:
+		print("ERROR: assign hero_Tirus.tres in the Inspector")
+		return
 
-	# 1. Verify RunState autoload works
-	RunState.start_new_run("player_test_seed")
-	print("Floor: ", RunState.current_floor)
-	print("Gold: ", RunState.gold)
-	print("Tower floor 3: ", RunState.floor_map[3])
+	print("=== HERO LOADED ===")
+	print("Name:     ", test_hero.hero_name)
+	print("Rarity:   ", test_hero.get_rarity_label())
+	print("HP lv1:   ", test_hero.get_stat_at_level("hp", 1))
+	print("HP lv10:  ", test_hero.get_stat_at_level("hp", 10))
+	print("Skills:   ", test_hero.skills.size())
+	for s in test_hero.skills:
+		print("  → ", s.skill_name, " | cd:", s.cooldown_turns, " | x", s.atk_multiplier)
 
-	# 2. Connect to BattleManager signals
-	BattleManager.battle_ended.connect(_on_battle_ended)
-	BattleManager.unit_attacked.connect(_on_unit_attacked)
+	var inst = HeroInstance.create(test_hero, "test_run_01")
+	print("\n=== INSTANCE ===")
+	print("Max HP:  ", inst.max_hp)
+	print("ATK:     ", inst.atk)
+	print("Morale:  ", inst.morale)
 
-	print("Autoloads connected. Ready.")
+	var dmg = inst.take_damage(50)
+	print("Took %d dmg → %d/%d HP" % [dmg, inst.current_hp, inst.max_hp])
 
-func _on_battle_ended(victory: bool, survivors: Array) -> void:
-	print("Battle ended! Victory: ", victory)
-	print("Survivors: ", survivors.size())
-
-func _on_unit_attacked(attacker, target, damage: int, is_crit: bool) -> void:
-	var crit_text = " [CRIT!]" if is_crit else ""
-	print("%s hit %s for %d%s" % [attacker.data.hero_name, target.data.hero_name, damage, crit_text])
+	inst.add_xp(150)
+	print("After XP → Level:", inst.level, " HP:", inst.max_hp)

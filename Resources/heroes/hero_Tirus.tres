@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://d64df0lhfgsv"]
+
+[ext_resource type="Script" uid="uid://btntb7yfgs8cr" path="res://Resources/HeroData.gd" id="1_0ndn0"]
+[ext_resource type="Texture2D" uid="uid://dvu8cxn7isv10" path="res://art/heroes/rogues.png" id="1_0sxag"]
+[ext_resource type="Script" uid="uid://bxqriweplo1oh" path="res://Resources/SkillData.gd" id="2_mq53a"]
+[ext_resource type="Resource" uid="uid://c2e8u1po3kti8" path="res://Resources/skills/basic_attack.tres" id="4_wnkav"]
+[ext_resource type="Resource" uid="uid://b0v40dw4cuyja" path="res://Resources/skills/heavy_attack.tres" id="5_80bev"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s8f2u"]
+atlas = ExtResource("1_0sxag")
+region = Rect2(0, 5, 30, 27)
+
+[resource]
+script = ExtResource("1_0ndn0")
+hero_name = "Tirus"
+hero_id = "hero_Tirus"
+backstory = "Yawa"
+portrait = SubResource("AtlasTexture_s8f2u")
+battle_sprite = SubResource("AtlasTexture_s8f2u")
+rarity = 1
+base_hp = 180
+base_atk = 22
+base_def = 8
+base_spd = 12
+base_crit_chance = 0.08
+base_crit_mult = 1.6
+hp_growth = 25.0
+atk_growth = 4.0
+def_growth = 2.0
+spd_growth = 0.3
+skills = Array[ExtResource("2_mq53a")]([ExtResource("4_wnkav"), ExtResource("5_80bev")])
+personality = 0
+base_morale = 85
+metadata/_custom_type_script = "uid://btntb7yfgs8cr"

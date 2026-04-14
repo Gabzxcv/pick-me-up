@@ -1,1 +1,13 @@
+res://test_battle.tscn
+res://Resources/SkillData.gd
+res://Resources/skills/basic_attack.tres
+res://Resources/skills/heavy_attack.tres
+res://Resources/AppearanceData.gd
+res://Resources/AppearanceGenerator.gd
+res://Resources/HeroData.gd
+res://Resources/heroes/hero_Tirus.tres
 res://test_battle.gd
+res://Resources/HeroInstance.gd
+res://autoloads/BattleManager.gd
+res://autoloads/GachaManager.gd
+res://autoloads/RunState.gd
