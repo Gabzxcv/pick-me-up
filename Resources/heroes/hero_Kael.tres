@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="HeroData" format=3 uid="uid://herokael00001"]
+
+[ext_resource type="Script" uid="uid://btntb7yfgs8cr" path="res://Resources/HeroData.gd" id="1_kael"]
+[ext_resource type="Texture2D" uid="uid://dvu8cxn7isv10" path="res://art/heroes/rogues.png" id="2_kael"]
+[ext_resource type="Script" uid="uid://bxqriweplo1oh" path="res://Resources/SkillData.gd" id="3_kael"]
+[ext_resource type="Resource" uid="uid://c2e8u1po3kti8" path="res://Resources/skills/basic_attack.tres" id="4_kael"]
+[ext_resource type="Resource" uid="uid://b0v40dw4cuyja" path="res://Resources/skills/heavy_attack.tres" id="5_kael"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kael"]
+atlas = ExtResource("2_kael")
+region = Rect2(60, 5, 30, 27)
+
+[resource]
+script = ExtResource("1_kael")
+hero_name = "Kael"
+hero_id = "hero_Kael"
+backstory = "A volatile archmage who bends reality with raw power."
+portrait = SubResource("AtlasTexture_kael")
+battle_sprite = SubResource("AtlasTexture_kael")
+rarity = 2
+role = 2
+base_hp = 100
+base_atk = 32
+base_def = 3
+base_spd = 14
+base_crit_chance = 0.10
+base_crit_mult = 2.0
+hp_growth = 14.0
+atk_growth = 5.5
+def_growth = 0.8
+spd_growth = 0.4
+skills = Array[ExtResource("3_kael")]([ExtResource("4_kael"), ExtResource("5_kael")])
+personality = 4
+base_morale = 80
+loyalty_threshold = 20

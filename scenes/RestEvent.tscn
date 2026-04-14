@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://screstevent01"]
+
+[ext_resource type="Script" uid="uid://crestevent001" path="res://scenes/RestEvent.gd" id="1_rest"]
+
+[node name="RestEvent" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_rest")
